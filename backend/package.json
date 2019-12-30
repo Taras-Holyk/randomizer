@@ -5,15 +5,19 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "@sailshq/lodash": "^3.10.3",
+    "graphql": "^14.5.8",
     "sails": "^1.2.3",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
-    "@sailshq/lodash": "^3.10.3"
+    "sails-postgresql": "^1.0.2"
   },
   "devDependencies": {
-    "eslint": "5.16.0"
+    "eslint": "5.16.0",
+    "nodemon": "^2.0.2"
   },
   "scripts": {
+    "dev": "nodemon app.js",
     "start": "NODE_ENV=production node app.js",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "./node_modules/eslint/bin/eslint.js . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
@@ -28,5 +32,12 @@
   "license": "",
   "engines": {
     "node": "^12.13"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".tmp/*",
+      "views/*",
+      "assets/*"
+    ]
   }
 }

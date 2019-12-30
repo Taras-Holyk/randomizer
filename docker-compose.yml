@@ -2,7 +2,10 @@ version: '3.7'
 services:
   backend:
     build: ./backend
-    command: sails lift
+    command: npm run dev
+    container_name: "backend"
+    depends_on:
+      - db
     ports:
       - "1337:1337"
     volumes:

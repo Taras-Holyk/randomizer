@@ -6,11 +6,14 @@
   "keywords": [],
   "dependencies": {
     "@sailshq/lodash": "^3.10.3",
+    "bcrypt": "^3.0.7",
     "graphql": "^14.5.8",
+    "jsonwebtoken": "^8.5.1",
     "sails": "^1.2.3",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
-    "sails-postgresql": "^1.0.2"
+    "sails-postgresql": "^1.0.2",
+    "validator": "^12.1.0"
   },
   "devDependencies": {
     "eslint": "5.16.0",

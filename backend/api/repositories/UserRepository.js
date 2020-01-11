@@ -5,3 +5,7 @@ module.exports.createUser = (userInfo) => {
 module.exports.findByEmail = (email) => {
   return User.findOne({ email });
 };
+
+module.exports.findById = (id) => {
+  return User.findOne({ id });
+};

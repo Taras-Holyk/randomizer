@@ -1,6 +1,9 @@
 const { graphql, GraphQLSchema, GraphQLObjectType } = require('graphql');
 const UserMutation = require('./../mutations/UserMutation');
+const ContestMutation = require('./../mutations/ContestMutation');
+const ContestParticipantMutation = require('./../mutations/ContestParticipantMutation');
 const UserQuery = require('./../queries/UserQuery');
+const ContestQuery = require('./../queries/ContestQuery');
 
 /**
  * UserController
@@ -15,13 +18,16 @@ module.exports = {
       query: new GraphQLObjectType({
         name: 'RootQueryType',
         fields: () => ({
-          ...UserQuery
+          ...UserQuery,
+          ...ContestQuery
         }),
       }),
       mutation: new GraphQLObjectType({
         name: 'RootMutation',
         fields: () => ({
-          ...UserMutation
+          ...UserMutation,
+          ...ContestMutation,
+          ...ContestParticipantMutation
         })
       })
     });

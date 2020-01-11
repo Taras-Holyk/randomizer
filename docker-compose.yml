@@ -10,14 +10,17 @@ services:
       - "1337:1337"
     volumes:
       - ./backend:/srv/backend
-    restart: on-failure
+      - /srv/backend/node_modules
+    restart: always
     links:
       - db
   db:
     image: "postgres"
     container_name: "postgres"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-    restart: on-failure
+    restart: always
+    env_file:
+      - .env

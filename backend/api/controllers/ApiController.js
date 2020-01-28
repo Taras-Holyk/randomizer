@@ -2,6 +2,7 @@ const { graphql, GraphQLSchema, GraphQLObjectType } = require('graphql');
 const UserMutation = require('./../mutations/UserMutation');
 const ContestMutation = require('./../mutations/ContestMutation');
 const ContestParticipantMutation = require('./../mutations/ContestParticipantMutation');
+const PrizeMutation = require('./../mutations/PrizeMutation');
 const UserQuery = require('./../queries/UserQuery');
 const ContestQuery = require('./../queries/ContestQuery');
 
@@ -27,7 +28,8 @@ module.exports = {
         fields: () => ({
           ...UserMutation,
           ...ContestMutation,
-          ...ContestParticipantMutation
+          ...ContestParticipantMutation,
+          ...PrizeMutation
         })
       })
     });
@@ -44,7 +46,9 @@ module.exports = {
           }
         },
         user: await sails.helpers.getAuthenticatedUser(req.headers)
-      }
+      },
+      req.body.variables,
+      req.body.operationName
     ).then(result => {
       res.json(result);
     });

@@ -23,6 +23,15 @@ module.exports = {
       type: 'string',
       required: true
     },
+    contests: {
+      collection: 'contest',
+      via: 'user'
+    },
+    participatesInContests: {
+      collection: 'contest',
+      via: 'participant',
+      through: 'contestparticipant'
+    }
   },
   beforeCreate: function(user, cb){
     bcrypt.hash(user.password, 10, (err, hash) => {

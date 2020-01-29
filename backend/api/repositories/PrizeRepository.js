@@ -13,3 +13,7 @@ exports.deletePrize = (prizeId) => {
 exports.findById = (id) => {
   return Prize.findOne({ id });
 };
+
+exports.deleteContestPrizes = (contestId) => {
+  return Prize.destroy({ contest: contestId });
+};

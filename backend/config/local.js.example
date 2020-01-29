@@ -1,0 +1,14 @@
+module.exports = {
+  datastores: {
+    default: {
+      adapter: 'sails-postgresql',
+      url: ''
+    }
+  },
+  models: {
+    migrate: 'alter'
+  },
+  custom: {
+    appKey: ''
+  }
+};

@@ -1,103 +1,103 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLInt } = require('graphql');
-const slugify = require('slugify');
-const moment = require('moment');
 const PrizeType = require('./../types/PrizeType');
 const ContestType = require('./../types/ContestType');
 const prizeRepository = require('./../repositories/PrizeRepository');
 const contestRepository = require('./../repositories/ContestRepository');
 
 module.exports = {
-  addPrize: {
+  addPrizeToContest: {
     type: PrizeType,
     args: {
       name: {
         type: new GraphQLNonNull(GraphQLString)
       },
       place: {
-        type: new GraphQLNonNull(GraphQLString)
+        type: new GraphQLNonNull(GraphQLInt)
       },
       contestId: {
         type: new GraphQLNonNull(GraphQLID)
       },
     },
     resolve: async (rootValue, input, context) => {
+      await sails.helpers.checkAuthUser(context.user);
 
-      return prizeRepository.createContest({
-        user: context.user.id,
-        permalink: slugify(input.name),
+      const contest = await contestRepository.findById(input.contestId).populate('user');
+      if (!contest) {
+        throw new Error(`Contest with id ${input.contestId} does not exist`);
+      }
+
+      if (contest.user.id !== context.user.id) {
+        throw new Error('You do not have permission to add prizes to this contest');
+      }
+
+      return prizeRepository.addPrize({
         name: input.name,
-        startDate: moment(input.startDate).format('YYYY-MM-DD'),
-        endDate: moment(input.endDate).format('YYYY-MM-DD'),
-        isActive: input.isActive,
-        isFinished: 0
+        contest: input.contestId,
+        place: input.place
       });
     }
   },
-  updateContest: {
-    type: ContestType,
+  updatePrize: {
+    type: PrizeType,
     args: {
-      contestId: {
+      prizeId: {
         type: new GraphQLNonNull(GraphQLID)
       },
       name: {
         type: new GraphQLNonNull(GraphQLString)
       },
-      startDate: {
-        type: new GraphQLNonNull(GraphQLString)
-      },
-      endDate: {
-        type: new GraphQLNonNull(GraphQLString)
-      },
-      isActive: {
-        type: GraphQLInt
+      place: {
+        type: new GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: async (rootValue, input, context) => {
       await sails.helpers.checkAuthUser(context.user);
 
-      const contest = await contestRepository.findById(input.contestId).populate('user');
-      if (!contest) {
-        throw new Error(`Contest with id ${input.contestId} does not exist`);
+      const prize = await prizeRepository.findById(input.prizeId).populate('contest');
+      if (!prize) {
+        throw new Error(`Prize with id ${input.prizeId} does not exist`);
       }
 
-      if (contest.user.id !== context.user.id) {
-        throw new Error('You don not have permission to edit this contest');
+      if (!Object.keys(prize.contest).length) {
+        throw new Error(`Contest with id ${prize.contest.id} does not exist`);
       }
 
-      const contestData = {
-        permalink: slugify(input.name),
+      if (prize.contest.user !== context.user.id) {
+        throw new Error('You do not have permission to edit this prize');
+      }
+
+      const prizeData = {
         name: input.name,
-        startDate: moment(input.startDate).format('YYYY-MM-DD'),
-        endDate: moment(input.endDate).format('YYYY-MM-DD')
+        place: input.place
       };
 
-      if ('isActive' in input) {
-        contestData.isActive = input.isActive;
-      }
-
-      return contestRepository.updateContest(contest.id, contestData);
+      return prizeRepository.updatePrize(prize.id, prizeData);
     }
   },
-  deleteContest: {
+  deletePrize: {
     type: ContestType,
     args: {
-      contestId: {
+      prizeId: {
         type: new GraphQLNonNull(GraphQLID)
       }
     },
     resolve: async (rootValue, input, context) => {
       await sails.helpers.checkAuthUser(context.user);
 
-      const contest = await contestRepository.findById(input.contestId).populate('user');
-      if (!contest) {
-        throw new Error(`Contest with id ${input.contestId} does not exist`);
+      const prize = await prizeRepository.findById(input.prizeId).populate('contest');
+      if (!prize) {
+        throw new Error(`Prize with id ${input.prizeId} does not exist`);
       }
 
-      if (contest.user.id !== context.user.id) {
-        throw new Error('You don not have permission to delete this contest');
+      if (!Object.keys(prize.contest).length) {
+        throw new Error(`Contest with id ${prize.contest.id} does not exist`);
       }
 
-      return contestRepository.deleteContest(contest.id);
+      if (prize.contest.user !== context.user.id) {
+        throw new Error('You do not have permission to delete this prize');
+      }
+
+      return prizeRepository.deletePrize(prize.id);
     }
   }
 };

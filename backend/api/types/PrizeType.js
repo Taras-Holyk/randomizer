@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString } = require('graphql');
+const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt } = require('graphql');
 const ContestType = require('./ContestType');
 const contestRepository = require('./../repositories/ContestRepository');
 
@@ -13,7 +13,7 @@ module.exports = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString)
     },
     place: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(GraphQLInt)
     },
     contest: {
       type: new GraphQLNonNull(ContestType),

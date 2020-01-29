@@ -3,6 +3,7 @@ const slugify = require('slugify');
 const moment = require('moment');
 const ContestType = require('./../types/ContestType');
 const contestRepository = require('./../repositories/ContestRepository');
+const prizeRepository = require('./../repositories/PrizeRepository');
 
 module.exports = {
   createContest: {
@@ -63,7 +64,7 @@ module.exports = {
       }
 
       if (contest.user.id !== context.user.id) {
-        throw new Error('You don not have permission to edit this contest');
+        throw new Error('You do not have permission to edit this contest');
       }
 
       const contestData = {
@@ -96,10 +97,13 @@ module.exports = {
       }
 
       if (contest.user.id !== context.user.id) {
-        throw new Error('You don not have permission to delete this contest');
+        throw new Error('You do not have permission to delete this contest');
       }
 
-      return contestRepository.deleteContest(contest.id);
+      await contestRepository.deleteContest(contest.id);
+      await prizeRepository.deleteContestPrizes(contest.id);
+
+      return contest;
     }
   }
 };

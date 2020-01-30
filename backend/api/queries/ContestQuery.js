@@ -1,4 +1,4 @@
-const { GraphQLNonNull, GraphQLID, GraphQLString } = require('graphql');
+const { GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt } = require('graphql');
 const ContestType = require('./../types/ContestType');
 const ContestsListType = require('./../types/ContestsListType');
 const contestRepository = require('./../repositories/ContestRepository');
@@ -37,10 +37,10 @@ module.exports = {
     description: 'This query will fetch all contests with pagination',
     args: {
       skip: {
-        type: new GraphQLNonNull(GraphQLID)
+        type: new GraphQLNonNull(GraphQLInt)
       },
       first: {
-        type: new GraphQLNonNull(GraphQLID)
+        type: new GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: async (rootValue, input, context) => {

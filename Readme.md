@@ -7,5 +7,5 @@
 * Api docs located in the folder `/backend/docs/schema/`
 
 #### Api url
-* http://ec2-18-188-166-68.us-east-2.compute.amazonaws.com/
+* http://ec2-3-19-215-155.us-east-2.compute.amazonaws.com/
 * Requires authorization with json web token (type `Bearer`)

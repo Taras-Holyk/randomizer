@@ -6,7 +6,7 @@
   "keywords": [],
   "dependencies": {
     "@sailshq/lodash": "^3.10.3",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
